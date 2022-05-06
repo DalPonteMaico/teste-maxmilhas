@@ -9,6 +9,16 @@ export class RestrictionsService {
   constructor(@InjectModel('Restriction') private restrictionModel: Model<RestrictionDocument>) {
   }
 
+  list() {
+    const query = this.restrictionModel.find({}).select({
+        'cpf': 1,
+        createdAt: 1,
+        '_id': 0,
+      },
+    );
+    return query.exec()
+  }
+
   async create(createRestrictionDto: CreateRestrictionDto) {
     const created = new this.restrictionModel(createRestrictionDto);
     return created.save();

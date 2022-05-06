@@ -10,13 +10,18 @@ export class RestrictionsController {
   constructor(private readonly restrictionsService: RestrictionsService) {
   }
 
+  @Get()
+  list() {
+    return this.restrictionsService.list();
+  }
+
   @Post()
   async create(@Body() createRestrictionDto: CreateRestrictionDto) {
     const { cpf, createdAt } = await this.restrictionsService.create(createRestrictionDto);
     return { cpf, createdAt };
   }
 
-  @Get()
+  @Get('search')
   async searchCpf(@Query('cpf') cpfNumber: string) {
     if (!cpf.isValid(cpfNumber))
       throw new InvalidCpfException();
