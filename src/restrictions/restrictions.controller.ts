@@ -4,6 +4,7 @@ import { CreateRestrictionDto } from './dto/create-restriction.dto';
 import { cpf } from 'cpf-cnpj-validator';
 import { NotFoundCpfException } from './exceptions/notFoundCpf.exception';
 import { InvalidCpfException } from './exceptions/InvalidCpf.exception';
+import { ExistsCpfException } from './exceptions/existsCpf.exception';
 
 @Controller('restrictions')
 export class RestrictionsController {
@@ -17,6 +18,10 @@ export class RestrictionsController {
 
   @Post()
   async create(@Body() createRestrictionDto: CreateRestrictionDto) {
+    const [found] = await this.restrictionsService.search({ cpf: createRestrictionDto.cpf });
+    if (found)
+      throw new ExistsCpfException();
+
     const { cpf, createdAt } = await this.restrictionsService.create(createRestrictionDto);
     return { cpf, createdAt };
   }
