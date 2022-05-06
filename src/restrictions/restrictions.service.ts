@@ -9,10 +9,13 @@ export class RestrictionsService {
   constructor(@InjectModel('Restriction') private restrictionModel: Model<RestrictionDocument>) {
   }
 
-  create(createRestrictionDto: CreateRestrictionDto) {
+  async create(createRestrictionDto: CreateRestrictionDto) {
     const created = new this.restrictionModel(createRestrictionDto);
-    const { cpf, createdAt } = created.save();
-    return { cpf, createdAt };
+    return created.save();
+  }
+
+  async search({ cpf }) {
+    return this.restrictionModel.find({ 'cpf': cpf });
   }
 
 }
