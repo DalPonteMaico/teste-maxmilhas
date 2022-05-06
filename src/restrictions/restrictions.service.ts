@@ -18,4 +18,8 @@ export class RestrictionsService {
     return this.restrictionModel.find({ 'cpf': cpf });
   }
 
+  async delete({ cpf }) {
+    return this.restrictionModel.deleteMany({ 'cpf': cpf });
+  }
+
 }
